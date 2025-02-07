@@ -34,7 +34,7 @@ static int handleStartState (int c)
         CURRENT_STATE = CHAR_LITERAL;
         putchar(c);
     }
-    else if (c == '\n') // New line character
+    else if (c == '\n') /* New line character */
     {
         putchar(c);
         lineNumber++; /* Increment total number of lines */
@@ -133,10 +133,10 @@ static int handleInCommentState (int c)
 
 static int handleEndCommentState (int c)
 {
+    int i;
     if (c == '/') {
         CURRENT_STATE = START;
         putchar(' ');
-        int i;
         for (i = 0; i < newLineInCommentCount; i++) 
         {
             putchar('\n');
