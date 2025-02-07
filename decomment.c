@@ -122,7 +122,7 @@ static int handleInCommentState (int c)
     else if (c == '\n') 
     {
         newLineInCommentCount++;
-        putchar(c);
+        lineNumber++;
     }
     else 
     {
