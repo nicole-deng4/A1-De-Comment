@@ -14,7 +14,7 @@ enum State
 };
 
 static int lineNumber = 1;
-static int newLineInCommentCount = 1;
+static int newLineInCommentCount = 0;
 static enum State CURRENT_STATE = START;
 static enum State PREVIOUS_STATE = START;
 
@@ -135,24 +135,19 @@ static int handleEndCommentState (int c)
 {
     int i;
 
-    if (newLineInCommentCount == 0)
+    if (c == '/')
     {
-        putchar (' ');
-    }
-    else
-    {
+        CURRENT_STATE = START;
+        
         for (i = 0; i < newLineInCommentCount; i++) 
         {
             putchar('\n');
             lineNumber++;
         }
-        newLineInCommentCount = 1;
+        newLineInCommentCount = 0;
+        putchar (' ');
     }
-
-    if (c == '/') {
-        CURRENT_STATE = START;
-    }
-    else 
+    else
     {    
         CURRENT_STATE = IN_COMMENT;
     }
