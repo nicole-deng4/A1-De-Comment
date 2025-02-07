@@ -15,21 +15,21 @@ enum State
 
 static int lineNumber = 1;
 static int newLineInCommentCount = 0;
-static State CURRENT_STATE = START
-static State PREVIOUS_STATE = START
+static enum State CURRENT_STATE = START;
+static enum State PREVIOUS_STATE = START;
 
 static int handleStartState (int c)
 {
-    if (c == '/') // Start of a comment
+    if (c == '/') /* Start of a comment */
     {
         CURRENT_STATE = START_COMMENT;
     }
-    else if (c == '\"') // Start of a string literal
+    else if (c == '\"') /* Start of a string literal */
     {
         CURRENT_STATE = STRING_LITERAL;
         putchar(c);
     }
-    else if (c == '\'') // Start of a character literal 
+    else if (c == '\'') /* Start of a character literal */
     {
         CURRENT_STATE = CHAR_LITERAL;
         putchar(c);
@@ -37,11 +37,11 @@ static int handleStartState (int c)
     else if (c == '\n') // New line character
     {
         putchar(c);
-        lineNumber++; // Increment total number of lines
+        lineNumber++; /* Increment total number of lines */
     }
     else 
     {
-        CURRENT_STATE = START; // technically do nothing
+        CURRENT_STATE = START; /* technically do nothing */
         putchar(c);
     }
     return getchar();   
@@ -49,11 +49,11 @@ static int handleStartState (int c)
 
 static int handleStartCommentState (int c)
 {
-    if (c == '*') // Full start of a comment
+    if (c == '*') /* Full start of a comment */
     {
         CURRENT_STATE = IN_COMMENT; 
     }
-    else // Uncomplete start of a comment, previous '/' gets treated as a regular character
+    else /* Uncomplete start of a comment, previous '/' gets treated as a regular character */
     {
         putchar ('/'); 
         putchar (c);
@@ -64,25 +64,25 @@ static int handleStartCommentState (int c)
 
 static int handleStringLiteralState (int c)
 {
-    if (c == '\"') // End of string literal
+    if (c == '\"') /* End of string literal */
     {
         CURRENT_STATE = START;
         putchar(c);
     }
-    else if (c == '\\') // Start of escape character
+    else if (c == '\\') /* Start of escape character */
     {
         PREVIOUS_STATE = STRING_LITERAL;
         CURRENT_STATE = ESCAPE;
     }
-    else if (c == '\n') // New line character
+    else if (c == '\n') /* New line character */
     {
         putchar (c);
         CURRENT_STATE = STRING_LITERAL;
-        lineNumber++; // Increment total number of lines
+        lineNumber++; /* Increment total number of lines */
     }
     else
     {
-        CURRENT_STATE = STRING_LITERAL; // technically do nothing
+        CURRENT_STATE = STRING_LITERAL; /* technically do nothing */
         putchar (c);
     }
     return getchar();
@@ -136,7 +136,8 @@ static int handleEndCommentState (int c)
     if (c == '/') {
         CURRENT_STATE = START;
         putchar(' ');
-        for (int i = 0; i < newLineInCommentCount; i++) 
+        int i;
+        for (i = 0; i < newLineInCommentCount; i++) 
         {
             putchar('\n');
             lineNumber++;
