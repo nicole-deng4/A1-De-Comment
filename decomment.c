@@ -9,7 +9,6 @@ enum State
     STRING_LITERAL, 
     CHARACTER_LITERAL, 
     IN_COMMENT,
-    IN_INVALID_COMMENT,
     END_COMMENT,
     ESCAPE
 };
@@ -119,7 +118,7 @@ static int handleCharacterLiteralState (int c)
     }
     else if (c == '\\') 
     {
-        PREVIOUS_STATE = CHAR_LITERAL;
+        PREVIOUS_STATE = CHARACTER_LITERAL;
         CURRENT_STATE = ESCAPE;
     }
     else if (c == '\n') 
