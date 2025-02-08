@@ -57,7 +57,6 @@ static int handleStartCommentState (int c)
     else /* Uncomplete start of a comment, previous '/' gets treated as a regular character */
     {
         putchar ('/'); 
-        putchar (c);
         CURRENT_STATE = START;
     }
     return getchar();      
