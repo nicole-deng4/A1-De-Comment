@@ -53,11 +53,13 @@ static int handleStartCommentState (int c)
     if (c == '*') /* Full start of a comment */
     {
         CURRENT_STATE = IN_COMMENT; 
+        PREVIOUS_STATE = START_COMMENT;
     }
     else if (c == '/')
     {
         putchar ('/');
-        return getchar();
+        PREVIOUS_STATE = START_COMMENT;
+        
         /*CURRENT_STATE = START_COMMENT;*/
     }
     else /* Uncomplete start of a comment*/
@@ -83,8 +85,9 @@ static int handleStartCommentState (int c)
         {
             CURRENT_STATE = START;
         }
+        PREVIOUS_STATE = START_COMMENT;
     }
-    PREVIOUS_STATE = START_COMMENT;
+    
     return getchar();      
 }
 
