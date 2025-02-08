@@ -227,9 +227,13 @@ int main (void)
         }
     }
 
-    if (PREVIOUS_STATE == START_COMMENT)
+    if (CURRENT_STATE == START_COMMENT)
     {
-        putchar ('\\');
+        putchar ('/');
+    }
+    else if (CURRENT_STATE == ESCAPE)
+    {
+        putchar ('\');
     }
 
     if (CURRENT_STATE == IN_COMMENT || CURRENT_STATE == END_COMMENT) 
