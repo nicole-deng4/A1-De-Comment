@@ -156,8 +156,9 @@ static int handleInCommentState (int c)
 
 static int handleEndCommentState (int c)
 {
-    PREVIOUS_STATE = END_COMMENT;
     int i;
+    PREVIOUS_STATE = END_COMMENT;
+    
     if (c == '/')  
     {
         CURRENT_STATE = START;
