@@ -233,7 +233,7 @@ int main (void)
     }
     else if (CURRENT_STATE == ESCAPE)
     {
-        putchar ('\');
+        putchar ('\\');
     }
 
     if (CURRENT_STATE == IN_COMMENT || CURRENT_STATE == END_COMMENT) 
