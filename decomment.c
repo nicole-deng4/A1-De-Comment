@@ -8,7 +8,8 @@ enum State
     START_COMMENT, 
     STRING_LITERAL, 
     CHAR_LITERAL, 
-    IN_COMMENT, 
+    IN_COMMENT,
+    IN_INVALID_COMMENT,
     END_COMMENT,
     ESCAPE
 };
@@ -63,7 +64,22 @@ static int handleStartCommentState (int c)
     {
         putchar ('/'); 
         putchar (c);
-        CURRENT_STATE = START;
+        if (c == '\"')
+        {
+            CURRENT_STATE = STRING_LITERAL;
+        }
+        else if (c == '\'')
+        {
+            CURRENT_STATE = CHARACTER_LITERAL;
+        }
+        else if (c == '\n')
+        {
+            lineNumber++;
+        }
+        else
+        {
+            CURRENT_STATE = START;
+        }
     }
     return getchar();      
 }
@@ -154,6 +170,10 @@ static int handleEndCommentState (int c)
     else if (c == '*')
     {
         CURRENT_STATE = END_COMMENT;
+    }
+    else if (c == '\n')
+    {
+        newLineInCommentCount++;
     }
     else  
     {    
