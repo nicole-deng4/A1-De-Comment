@@ -257,6 +257,7 @@ int main (void)
     }
     else if (CURRENT_STATE == IN_COMMENT || CURRENT_STATE == END_COMMENT) 
     {
+        putchar (' ');
         fprintf (stderr, "Error: line %d: unterminated comment\n", lineNumber);
         return EXIT_FAILURE;
     }
