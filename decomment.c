@@ -20,6 +20,7 @@ static enum State PREVIOUS_STATE = START;
 
 static int handleStartState (int c)
 {
+    PREVIOUS_STATE = START;
     if (c == '/') /* Start of a comment */
     {
         CURRENT_STATE = START_COMMENT;
@@ -49,7 +50,7 @@ static int handleStartState (int c)
 
 static int handleStartCommentState (int c)
 {
-    
+    PREVIOUS_STATE = START_COMMENT;
     if (c == '*') /* Full start of a comment */
     {
         CURRENT_STATE = IN_COMMENT; 
@@ -85,6 +86,7 @@ static int handleStartCommentState (int c)
 
 static int handleStringLiteralState (int c)
 {
+    PREVIOUS_STATE = STRING_LITERAL;
     if (c == '\"') /* End of string literal */
     {
         CURRENT_STATE = START;
@@ -111,6 +113,7 @@ static int handleStringLiteralState (int c)
 
 static int handleCharacterLiteralState (int c)
 {
+    PREVIOUS_STATE = CHARACTER_LITERAL;
     if (c == '\'') 
     {
         CURRENT_STATE = START;
@@ -118,7 +121,6 @@ static int handleCharacterLiteralState (int c)
     }
     else if (c == '\\') 
     {
-        PREVIOUS_STATE = CHARACTER_LITERAL;
         CURRENT_STATE = ESCAPE;
     }
     else if (c == '\n') 
@@ -136,6 +138,7 @@ static int handleCharacterLiteralState (int c)
 
 static int handleInCommentState (int c)
 {
+    PREVIOUS_STATE = IN_COMMENT;
     if (c == '*') 
     {
         CURRENT_STATE = END_COMMENT;
@@ -153,6 +156,7 @@ static int handleInCommentState (int c)
 
 static int handleEndCommentState (int c)
 {
+    PREVIOUS_STATE = END_COMMENT;
     int i;
     if (c == '/')  
     {
@@ -179,13 +183,12 @@ static int handleEndCommentState (int c)
         CURRENT_STATE = IN_COMMENT;  
     }
 
-    
-
     return getchar();
 }
 
 static int handleEscapeState (int c)
 {
+    PREVIOUS_STATE = ESCAPE;
     putchar(c);
     CURRENT_STATE = PREVIOUS_STATE;
     return getchar();
@@ -221,6 +224,11 @@ int main (void)
                 c = handleEscapeState(c);
                 break;
         }
+    }
+
+    if (PREVIOUS_STATE == START_COMMENT)
+    {
+        putchar ('\\');
     }
 
     if (CURRENT_STATE == IN_COMMENT || CURRENT_STATE == END_COMMENT) 
