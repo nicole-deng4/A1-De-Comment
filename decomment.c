@@ -61,7 +61,7 @@ static int handleStartCommentState (int c)
     }
     else /* Uncomplete start of a comment*/
     {
-        if (PREVIOUS_STATE == START || (PREVIOUS_STATE == START_COMMENT && c == '\n'))
+        if (PREVIOUS_STATE == START || c == '\n' || PREVIOUS_STATE == START_COMMENT)
         {
             putchar ('/'); 
         }
