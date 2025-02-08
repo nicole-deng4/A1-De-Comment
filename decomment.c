@@ -57,7 +57,7 @@ static int handleStartCommentState (int c)
     }
     else if (c == '/')
     {
-        putchar ('/'); /* /
+        putchar ('/');
         PREVIOUS_STATE = START;
         
         /*CURRENT_STATE = START_COMMENT;*/
