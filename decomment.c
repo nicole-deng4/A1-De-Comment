@@ -255,13 +255,13 @@ int main (void)
     else if (CURRENT_STATE == IN_COMMENT || CURRENT_STATE == END_COMMENT) 
     {
         int i = 0;
-        newLineInCommentCount = 0;
         putchar (' ');
         for (i = 0; i < newLineInCommentCount; i++)  
         {
             putchar('\n');  
             lineNumber++;
         }
+        newLineInCommentCount = 0;
         fprintf (stderr, "Error: line %d: unterminated comment\n", lineNumber);
         return EXIT_FAILURE;
     }
