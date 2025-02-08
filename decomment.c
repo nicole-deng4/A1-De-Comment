@@ -257,7 +257,7 @@ int main (void)
         int i = 0;
         newLineInCommentCount = 0;
         putchar (' ');
-        for (i = 0; i < newLineInCommentCount-1; i++)  
+        for (i = 0; i < newLineInCommentCount; i++)  
         {
             putchar('\n');  
             lineNumber++;
