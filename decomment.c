@@ -72,7 +72,7 @@ static int handleStartCommentState (int c)
         putchar (c);
         lineNumber++;
         CURRENT_STATE = START;
-        PREVIOUS_STATE = START_COMMENT
+        PREVIOUS_STATE = START_COMMENT;
     }
     else /* Uncomplete start of a comment*/
     {
