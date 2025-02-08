@@ -114,7 +114,6 @@ static int handleStringLiteralState (int c)
     else if (c == '\\') /* Start of escape character */
     {
         putchar (c);
-        PREVIOUS_STATE = STRING_LITERAL;
         CURRENT_STATE = ESCAPE;
     }
     else if (c == '\n') /* New line character */
@@ -141,6 +140,7 @@ static int handleCharacterLiteralState (int c)
     }
     else if (c == '\\') 
     {
+        putchar (c);
         CURRENT_STATE = ESCAPE;
     }
     else if (c == '\n') 
