@@ -20,7 +20,6 @@ static enum State PREVIOUS_STATE = START;
 
 static int handleStartState (int c)
 {
-    PREVIOUS_STATE = START;
     if (c == '/') /* Start of a comment */
     {
         CURRENT_STATE = START_COMMENT;
@@ -45,12 +44,12 @@ static int handleStartState (int c)
         CURRENT_STATE = START; /* technically do nothing */
         putchar(c);
     }
+    PREVIOUS_STATE = START;
     return getchar();   
 }
 
 static int handleStartCommentState (int c)
 {
-    PREVIOUS_STATE = START_COMMENT;
     if (c == '*') /* Full start of a comment */
     {
         CURRENT_STATE = IN_COMMENT; 
@@ -84,12 +83,12 @@ static int handleStartCommentState (int c)
             CURRENT_STATE = START;
         }
     }
+    PREVIOUS_STATE = START_COMMENT;
     return getchar();      
 }
 
 static int handleStringLiteralState (int c)
 {
-    PREVIOUS_STATE = STRING_LITERAL;
     if (c == '\"') /* End of string literal */
     {
         CURRENT_STATE = START;
@@ -111,12 +110,12 @@ static int handleStringLiteralState (int c)
         CURRENT_STATE = STRING_LITERAL; /* technically do nothing */
         putchar (c);
     }
+    PREVIOUS_STATE = STRING_LITERAL;
     return getchar();
 }
 
 static int handleCharacterLiteralState (int c)
 {
-    PREVIOUS_STATE = CHARACTER_LITERAL;
     if (c == '\'') 
     {
         CURRENT_STATE = START;
@@ -136,12 +135,12 @@ static int handleCharacterLiteralState (int c)
         CURRENT_STATE = CHARACTER_LITERAL;
         putchar(c);
     }
+    PREVIOUS_STATE = CHARACTER_LITERAL;
     return getchar();
 } 
 
 static int handleInCommentState (int c)
 {
-    PREVIOUS_STATE = IN_COMMENT;
     if (c == '*') 
     {
         CURRENT_STATE = END_COMMENT;
@@ -154,13 +153,13 @@ static int handleInCommentState (int c)
     {
         CURRENT_STATE = IN_COMMENT;
     }
+    PREVIOUS_STATE = IN_COMMENT;
     return getchar();
 }
 
 static int handleEndCommentState (int c)
 {
     int i;
-    PREVIOUS_STATE = END_COMMENT;
     
     if (c == '/')  
     {
@@ -186,15 +185,15 @@ static int handleEndCommentState (int c)
     {    
         CURRENT_STATE = IN_COMMENT;  
     }
-
+    PREVIOUS_STATE = END_COMMENT;
     return getchar();
 }
 
 static int handleEscapeState (int c)
 {
-    PREVIOUS_STATE = ESCAPE;
     putchar(c);
     CURRENT_STATE = PREVIOUS_STATE;
+    PREVIOUS_STATE = ESCAPE;
     return getchar();
 }
 
