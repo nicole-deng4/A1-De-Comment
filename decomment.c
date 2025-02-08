@@ -49,6 +49,7 @@ static int handleStartState (int c)
 
 static int handleStartCommentState (int c)
 {
+    
     if (c == '*') /* Full start of a comment */
     {
         CURRENT_STATE = IN_COMMENT; 
@@ -122,7 +123,6 @@ static int handleInCommentState (int c)
     else if (c == '\n') 
     {
         newLineInCommentCount++;
-        lineNumber++;
     }
     else 
     {
@@ -137,19 +137,14 @@ static int handleEndCommentState (int c)
     {
         CURRENT_STATE = START;
 
-        if (newLineInCommentCount == 0)  
+        int i;
+        for (i = 0; i < newLineInCommentCount; i++)
         {
-            putchar(' ');  
+            putchar('\n');
+            lineNumber++;
         }
-        else  
-        {
-            while (newLineInCommentCount > 0)  
-            {
-                putchar('\n');  
-                lineNumber++;
-                newLineInCommentCount--;
-            }
-        }
+
+        putchar(' ');  
     }
     else  
     {    
