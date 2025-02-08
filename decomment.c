@@ -24,7 +24,7 @@ static int handleStartState (int c)
     {
         CURRENT_STATE = IN_COMMENT;
     }
-    if (c == '/') /* Start of a comment */
+    else if (c == '/') /* Start of a comment */
     {
         CURRENT_STATE = START_COMMENT;
     }
