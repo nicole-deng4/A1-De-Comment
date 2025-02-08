@@ -252,10 +252,7 @@ int main (void)
     {
         putchar ('/');
     }
-    else if (CURRENT_STATE == ESCAPE)
-    {
-        putchar ('\\');
-    }
+    
     else if (CURRENT_STATE == IN_COMMENT || CURRENT_STATE == END_COMMENT) 
     {
         putchar (' ');
