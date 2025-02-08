@@ -111,11 +111,11 @@ static int handleStringLiteralState (int c)
         CURRENT_STATE = START;
         putchar(c);
     }
-    else if (c == '\\') /* Start of escape character */
+    /*else if (c == '\\') /* Start of escape character */
     {
         PREVIOUS_STATE = STRING_LITERAL;
         CURRENT_STATE = ESCAPE;
-    }
+    }*/
     else if (c == '\n') /* New line character */
     {
         putchar (c);
