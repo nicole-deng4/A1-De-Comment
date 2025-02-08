@@ -137,19 +137,14 @@ static int handleEndCommentState (int c)
     if (c == '/')  
     {
         CURRENT_STATE = START;
-        if (newLineInCommentCount != 0)
+        putchar (' ');
+        
+        for (i = 0; i < newLineInCommentCount; i++)  
         {
-            for (i = 0; i < newLineInCommentCount; i++)  
-            {
-                putchar('\n');  
-                lineNumber++;
-            }
-            newLineInCommentCount = 0; 
+            putchar('\n');  
+            lineNumber++;
         }
-        else
-        {
-            putchar (' ');  
-        }
+        newLineInCommentCount = 0;     
     }
     else  
     {    
