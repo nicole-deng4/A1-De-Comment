@@ -133,11 +133,11 @@ static int handleInCommentState (int c)
 
 static int handleEndCommentState (int c)
 {
+    int i;
     if (c == '/')  
     {
         CURRENT_STATE = START;
 
-        int i;
         for (i = 0; i < newLineInCommentCount; i++)  
         {
             putchar('\n');  
