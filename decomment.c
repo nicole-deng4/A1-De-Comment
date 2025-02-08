@@ -61,10 +61,10 @@ static int handleStartCommentState (int c)
     }
     else /* Uncomplete start of a comment*/
     {
-        if (PREVIOUS_STATE != START_COMMENT)
-        {
-            putchar ('/'); 
-        }
+        /*if (PREVIOUS_STATE != START_COMMENT)
+        {*/
+        putchar ('/'); 
+        /*}*/
         putchar (c);
         if (c == '\"')
         {
