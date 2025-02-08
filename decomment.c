@@ -252,9 +252,14 @@ int main (void)
     {
         putchar ('/');
     }
-    
     else if (CURRENT_STATE == IN_COMMENT || CURRENT_STATE == END_COMMENT) 
     {
+        for (i = 0; i < newLineInCommentCount; i++)  
+        {
+            putchar('\n');  
+            lineNumber++;
+        }
+        newLineInCommentCount = 0;
         putchar (' ');
         fprintf (stderr, "Error: line %d: unterminated comment\n", lineNumber);
         return EXIT_FAILURE;
