@@ -20,6 +20,10 @@ static enum State PREVIOUS_STATE = START;
 
 static int handleStartState (int c)
 {
+    if (c == '/' && PREVIOUS_STATE == END_COMMENT)
+    {
+        CURRENT_STATE = IN_COMMENT;
+    }
     if (c == '/') /* Start of a comment */
     {
         CURRENT_STATE = START_COMMENT;
