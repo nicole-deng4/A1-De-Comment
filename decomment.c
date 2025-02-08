@@ -39,10 +39,11 @@ static int handleStartState (int c)
         putchar(c);
         lineNumber++; /* Increment total number of lines */
     }
+    /*
     else if (c == '*' && PREVIOUS_STATE == START_COMMENT)
     {
         CURRENT_STATE = IN_COMMENT;
-    }
+    }*/
     else 
     {
         CURRENT_STATE = START; /* technically do nothing */
