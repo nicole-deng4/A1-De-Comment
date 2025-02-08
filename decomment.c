@@ -151,6 +151,10 @@ static int handleEndCommentState (int c)
         }
         newLineInCommentCount = 0;     
     }
+    else if (c == '*')
+    {
+        CURRENT_STATE = END_COMMENT;
+    }
     else  
     {    
         CURRENT_STATE = IN_COMMENT;  
