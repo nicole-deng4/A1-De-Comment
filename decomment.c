@@ -62,7 +62,10 @@ static int handleStartCommentState (int c)
     }
     else /* Uncomplete start of a comment*/
     {
-        putchar ('/'); 
+        if (PREVIOUS_STATE != START_COMMENT)
+        {
+            putchar ('/'); 
+        }
         putchar (c);
         if (c == '\"')
         {
@@ -235,8 +238,7 @@ int main (void)
     {
         putchar ('\\');
     }
-
-    if (CURRENT_STATE == IN_COMMENT || CURRENT_STATE == END_COMMENT) 
+    else if (CURRENT_STATE == IN_COMMENT || CURRENT_STATE == END_COMMENT) 
     {
         printf ("Error: line %d: unterminated comment\n", lineNumber);
         return EXIT_FAILURE;
