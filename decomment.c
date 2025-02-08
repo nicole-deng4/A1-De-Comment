@@ -7,7 +7,7 @@ enum State
     START, 
     START_COMMENT, 
     STRING_LITERAL, 
-    CHAR_LITERAL, 
+    CHARACTER_LITERAL, 
     IN_COMMENT,
     IN_INVALID_COMMENT,
     END_COMMENT,
@@ -32,7 +32,7 @@ static int handleStartState (int c)
     }
     else if (c == '\'') /* Start of a character literal */
     {
-        CURRENT_STATE = CHAR_LITERAL;
+        CURRENT_STATE = CHARACTER_LITERAL;
         putchar(c);
     }
     else if (c == '\n') /* New line character */
@@ -129,7 +129,7 @@ static int handleCharacterLiteralState (int c)
     }
     else 
     {
-        CURRENT_STATE = CHAR_LITERAL;
+        CURRENT_STATE = CHARACTER_LITERAL;
         putchar(c);
     }
     return getchar();
@@ -209,7 +209,7 @@ int main (void)
             case STRING_LITERAL:
                 c = handleStringLiteralState(c);
                 break;
-            case CHAR_LITERAL:
+            case CHARACTER_LITERAL:
                 c = handleCharacterLiteralState(c);
                 break;
             case IN_COMMENT:
