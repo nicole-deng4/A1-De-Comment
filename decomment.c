@@ -20,18 +20,13 @@ static int startOfCommentLineNumber = 0; /* Stores the starting line number of a
 static enum State CURRENT_STATE = START; /* Tracks the current state */
 static enum State PREVIOUS_STATE = START; /* Tracks the previous state */
 
-/* This function handles a character in the start state. 
-If a forward slash is detected, it transitions to the start comment state. If 
+/* This function handles a character in the start state. If a forward slash is detected, it transitions to the start comment state. If 
     a double quote is detected, it transitions to the string literal state. If a single quote is detected, it transitions to the character
     literal state. If a escape character is detected, the number of lines is incremented and the state is not changed. Otherwise, write the
     character stdout. The previous state is set to this start state and the next character is returned. */
 static int handleStartState (int c)
 {
-    /*if (c == '/' && PREVIOUS_STATE == END_COMMENT)
-    {
-        CURRENT_STATE = IN_COMMENT;
-    }
-    else */if (c == '/') /* Start of a comment */
+    if (c == '/') /* Start of a comment */
     {
         CURRENT_STATE = START_COMMENT;
     }
@@ -50,10 +45,10 @@ static int handleStartState (int c)
         putchar(c);
         lineNumber++; 
     }
-    else if (c == '*' && PREVIOUS_STATE == END_COMMENT)
+    /*else if (c == '*' && PREVIOUS_STATE == END_COMMENT)
     {
         CURRENT_STATE = END_COMMENT;
-    }
+    }*/
     else 
     {
         putchar(c);
