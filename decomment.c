@@ -45,14 +45,11 @@ static int handleStartState (int c)
         putchar(c);
         lineNumber++; 
     }
-    /*else if (c == '*' && PREVIOUS_STATE == END_COMMENT)
-    {
-        CURRENT_STATE = END_COMMENT;
-    }*/
-    else 
+    else /* Regular character */
     {
         putchar(c);
     }
+    
     PREVIOUS_STATE = START;
     return getchar();   
 }
@@ -67,23 +64,23 @@ static int handleStartState (int c)
     state is set to this start comment state and the next character is returned. */
 static int handleStartCommentState (int c)
 {
-    if (c == '*') /* Full start of a comment */
+    if (c == '*') /* Complete start of a comment */
     {
         CURRENT_STATE = IN_COMMENT; 
         startOfCommentLineNumber = lineNumber;
     }
-    else if (c == '/')
+    else if (c == '/') /* Another forward slash, could be the start of a comment */
     {
         putchar ('/');
     }
-    else if (c == '\n')
+    else if (c == '\n') /* New line character */
     {
         putchar ('/');
         putchar (c);
         lineNumber++;
         CURRENT_STATE = START;
     }
-    else 
+    else /* Incomplete comment, any other character */
     {
         putchar ('/'); 
         putchar (c);
@@ -100,17 +97,22 @@ static int handleStartCommentState (int c)
             CURRENT_STATE = START;
         }
     }
+    
     PREVIOUS_STATE = START_COMMENT;
     return getchar();      
 }
 
-
+/* This function handles a character in the string literal state. If a double quote is detected, it writes the double quote to stdout
+    and transitions back to the default start state because the string literal is closed. If a backwards slash is detected, it writes the
+    backwards slash to stdout and transitions it to the escape state. If a newline character is detected, it writes the newline to stdout
+    and increments the line number while remaining in the string literal state. Otherwise, it writes the character to stdout and remains in
+    the string literal state. The previous state is set to this string literal state and the next character is returned. */
 static int handleStringLiteralState (int c)
 {
     if (c == '\"') /* End of string literal */
     {
-        CURRENT_STATE = START;
         putchar(c);
+        CURRENT_STATE = START;
     }
     else if (c == '\\') /* Start of escape character */
     {
@@ -120,48 +122,59 @@ static int handleStringLiteralState (int c)
     else if (c == '\n') /* New line character */
     {
         putchar (c);
-        lineNumber++; /* Increment total number of lines */
+        lineNumber++; 
     }
-    else
+    else /* Any other character */
     {
         putchar (c);
     }
+
     PREVIOUS_STATE = STRING_LITERAL;
     return getchar();
 }
 
+/* This function handles a character in the character literal state. If a single quote is detected, it writes the single quote to stdout
+    and transitions back to the default start state because the string literal is closed. If a backwards slash is detected, it writes the
+    backwards slash to stdout and transitions it to the escape state. If a newline character is detected, it writes the newline to stdout
+    and increments the line number while remaining in the character literal state. Otherwise, it writes the character to stdout and remains 
+    in the character literal state. The previous state is set to this character literal state and the next character is returned. */
 static int handleCharacterLiteralState (int c)
 {
-    if (c == '\'') 
+    if (c == '\'') /* End of character literal */
     {
-        CURRENT_STATE = START;
         putchar(c);
+        CURRENT_STATE = START;
     }
-    else if (c == '\\') 
+    else if (c == '\\') /* Start of escape character */
     {
         putchar (c);
         CURRENT_STATE = ESCAPE;
     }
-    else if (c == '\n') 
+    else if (c == '\n') /* New line character */
     {
         putchar(c);
         lineNumber++;
     }
-    else 
+    else /* Any other character */
     {
         putchar(c);
     }
+    
     PREVIOUS_STATE = CHARACTER_LITERAL;
     return getchar();
 } 
 
+/* This function handles a character in the in comment state. If an asterisk is detected, the comment is potentially ending, so it 
+    transitions to the end comment state. If a newline character is detected, it increments the number of new lines inside the comment.
+    Otherwise, the character is not written to stdout and it remains in the in comment state. The previous state is set to this in comment 
+    state and the next character is returned. */
 static int handleInCommentState (int c)
 {
-    if (c == '*') 
+    if (c == '*') /* Potential end of comment */
     {
         CURRENT_STATE = END_COMMENT;
     }
-    else if (c == '\n') 
+    else if (c == '\n') /* New line inside comment */
     {
         newLineInCommentCount++;
     }
@@ -170,28 +183,35 @@ static int handleInCommentState (int c)
     return getchar();
 }
 
+/* This function handles a character in the end comment state. If a forward slash is detected, it is the end of the comment, so it first
+    writes a space character to stdout in place of the comment, then prints the number, if any, of new lines inside the comment, resets 
+    the count of the number of new lines inside the comment, and transitions back to the default start state. If a newline character is 
+    detected, it is an incomplete comment ending, so it transitions back to the in comment state and increments the number of new lines 
+    inside the comment. If any other character that isn't an asterisk is detected, it is also an incomplete comment ending so goes back 
+    to the in comment state (if it were an asterisk, the comment is still potentially ending so it would remain in the end comment state).
+    The previous state is set to this end comment state and the next character is returned. */
 static int handleEndCommentState (int c)
 {
-    int i;
+    int i; /* Initializing i at the top of the block */
     
-    if (c == '/')  
+    if (c == '/') /* Complete end of the comment */
     {
-        CURRENT_STATE = START;
         putchar (' ');
-        
+
         for (i = 0; i < newLineInCommentCount; i++)  
         {
             putchar('\n');  
             lineNumber++;
         }
-        newLineInCommentCount = 0;     
+        newLineInCommentCount = 0;
+        CURRENT_STATE = START;
     }
-    else if (c == '\n')
+    else if (c == '\n') /* New line character */
     {
         CURRENT_STATE = IN_COMMENT; 
         newLineInCommentCount++;
     }
-    else if (c != '*')
+    else if (c != '*') /* Any character that isn't an asterisk */
     {
         CURRENT_STATE = IN_COMMENT;
     }
@@ -200,6 +220,9 @@ static int handleEndCommentState (int c)
     return getchar();
 }
 
+/* This function handles a character in the escape state. It writes escaped character to the stdout as the character is devoid of any 
+    special meaning and transitions back to the stage it was originally in. The previous state is set to this escape state and the next 
+    character is returned. */
 static int handleEscapeState (int c)
 {
     putchar(c);
@@ -208,11 +231,15 @@ static int handleEscapeState (int c)
     return getchar();
 }
 
+/* This function reads text from stdin character by character, removing and replacing comments with spaces, handling unterminated comments,
+    and handling nested newlines within comments. If the last character was a forward slash, it deals with it by writing it to stdout. 
+    It returns EXIT_SUCESS if there were no errors and unterminated comments. If an unterminated comment is found, it returns EXIT_FAILURE 
+    and writes to stderr with an unterminated comment error and the line number of where the unterminated comment begins. */
 int main (void)
 {
     int c = getchar();
 
-    while (c != EOF) 
+    while (c != EOF) /* No more characters */
     {
         switch (CURRENT_STATE) 
         {
