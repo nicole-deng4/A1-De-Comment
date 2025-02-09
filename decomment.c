@@ -199,7 +199,7 @@ static int handleEndCommentState (int c)
     }
     else if (c == '\n')
     {
-        CURRENT_STATE = IN_COMMENT; /*used to be start*/
+        CURRENT_STATE = IN_COMMENT; 
         newLineInCommentCount++;
     }
     else  
