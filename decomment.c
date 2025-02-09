@@ -179,19 +179,16 @@ static int handleEndCommentState (int c)
         }
         newLineInCommentCount = 0;     
     }
-    else if (c == '*')
-    {
-        CURRENT_STATE = END_COMMENT;
-    }
     else if (c == '\n')
     {
         CURRENT_STATE = IN_COMMENT; 
         newLineInCommentCount++;
     }
-    else  
-    {    
-        CURRENT_STATE = IN_COMMENT;  
+    else if (c != '*')
+    {
+        CURRENT_STATE = IN_COMMENT;
     }
+
     PREVIOUS_STATE = END_COMMENT;
     return getchar();
 }
