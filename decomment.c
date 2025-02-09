@@ -15,6 +15,7 @@ enum State
 
 static int lineNumber = 1;
 static int newLineInCommentCount = 0;
+static int startOfCommentLineNumber = 0;
 static enum State CURRENT_STATE = START;
 static enum State PREVIOUS_STATE = START;
 
@@ -62,6 +63,7 @@ static int handleStartCommentState (int c)
     {
         CURRENT_STATE = IN_COMMENT; 
         PREVIOUS_STATE = START_COMMENT;
+        startOfCommentLineNumber = lineNumber;
     }
     else if (c == '/')
     {
@@ -262,7 +264,7 @@ int main (void)
             lineNumber++;
         }
         newLineInCommentCount = 0;
-        fprintf (stderr, "Error: line %d: unterminated comment\n", lineNumber);
+        fprintf (stderr, "Error: line %d: unterminated comment\n", startOfCommentLineNumber);
         return EXIT_FAILURE;
     }
 
