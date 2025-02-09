@@ -65,7 +65,6 @@ static int handleStartCommentState (int c)
     else if (c == '/')
     {
         putchar ('/');
-        CURRENT_STATE = START_COMMENT;
     }
     else if (c == '\n')
     {
@@ -114,12 +113,10 @@ static int handleStringLiteralState (int c)
     else if (c == '\n') /* New line character */
     {
         putchar (c);
-        CURRENT_STATE = STRING_LITERAL;
         lineNumber++; /* Increment total number of lines */
     }
     else
     {
-        CURRENT_STATE = STRING_LITERAL; /* technically do nothing */
         putchar (c);
     }
     PREVIOUS_STATE = STRING_LITERAL;
@@ -145,7 +142,6 @@ static int handleCharacterLiteralState (int c)
     }
     else 
     {
-        CURRENT_STATE = CHARACTER_LITERAL;
         putchar(c);
     }
     PREVIOUS_STATE = CHARACTER_LITERAL;
@@ -162,10 +158,7 @@ static int handleInCommentState (int c)
     {
         newLineInCommentCount++;
     }
-    else 
-    {
-        CURRENT_STATE = IN_COMMENT;
-    }
+
     PREVIOUS_STATE = IN_COMMENT;
     return getchar();
 }
