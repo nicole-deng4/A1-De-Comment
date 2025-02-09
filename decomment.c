@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 enum State 
 {
     START, 
@@ -48,9 +47,8 @@ static int handleStartState (int c)
     {
         CURRENT_STATE = END_COMMENT;
     }
-    else 
+    else /* Stay in the start state */
     {
-        CURRENT_STATE = START; /* technically do nothing */
         putchar(c);
     }
     PREVIOUS_STATE = START;
@@ -62,15 +60,12 @@ static int handleStartCommentState (int c)
     if (c == '*') /* Full start of a comment */
     {
         CURRENT_STATE = IN_COMMENT; 
-        PREVIOUS_STATE = START_COMMENT;
         startOfCommentLineNumber = lineNumber;
     }
     else if (c == '/')
     {
         putchar ('/');
-        
         CURRENT_STATE = START_COMMENT;
-        PREVIOUS_STATE = START_COMMENT;
     }
     else if (c == '\n')
     {
@@ -78,7 +73,6 @@ static int handleStartCommentState (int c)
         putchar (c);
         lineNumber++;
         CURRENT_STATE = START;
-        PREVIOUS_STATE = START_COMMENT;
     }
     else /* Uncomplete start of a comment*/
     {
@@ -100,9 +94,8 @@ static int handleStartCommentState (int c)
         {
             CURRENT_STATE = START;
         }
-        PREVIOUS_STATE = START_COMMENT;
     }
-    
+    PREVIOUS_STATE = START_COMMENT;
     return getchar();      
 }
 
