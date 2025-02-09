@@ -1,23 +1,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* Definining enumerations for the different states in the DFA */
 enum State 
 {
-    START, 
-    START_COMMENT, 
-    STRING_LITERAL, 
-    CHARACTER_LITERAL, 
-    IN_COMMENT,
-    END_COMMENT,
-    ESCAPE
+    START, /* Default state (not in a comment, string literal, or character literal) */
+    START_COMMENT, /* State for the potential start for a comment (detected '/') */
+    STRING_LITERAL, /* State for the inside of a string literal */
+    CHARACTER_LITERAL, /* State for the inside of a character literal */
+    IN_COMMENT, /* State for the inside of a comment */
+    END_COMMENT, /* State for the potential end for a comment (detected '*') */
+    ESCAPE /* State for the inside of an escape sequence */
 };
 
-static int lineNumber = 1;
-static int newLineInCommentCount = 0;
-static int startOfCommentLineNumber = 0;
-static enum State CURRENT_STATE = START;
-static enum State PREVIOUS_STATE = START;
+/* Declaring global variables to track state and line numbers */
+static int lineNumber = 1; /* Keeps track of the current line number */
+static int newLineInCommentCount = 0; /* Keeps track of the number of newlines inside comments */
+static int startOfCommentLineNumber = 0; /* Stores the starting line number of a comment (for the unterminated comment error message) */
+static enum State CURRENT_STATE = START; /* Tracks the current state */
+static enum State PREVIOUS_STATE = START; /* Tracks the previous state */
 
+/* This function handles a character in the start state. If a forward slash is detected, it transitions to the start comment state. If 
+    a double quote is detected, it transitions to the string literal state. If a single quote is detected, it transitions to the character
+    literal state. If a escape character is detected, the number of lines is incremented and the state is not changed. Otherwise, write the
+    character stdout. The previous state is set to this start state and the next character is returned. */
 static int handleStartState (int c)
 {
     if (c == '/' && PREVIOUS_STATE == END_COMMENT)
@@ -55,6 +61,14 @@ static int handleStartState (int c)
     return getchar();   
 }
 
+/* This function handles a character in the start comment state. If a asterisk is detected, it transitions to the in comment state and 
+    stores the current line number as the line number of the start of the comment. If a forward slash is detected, it writes the forward 
+    slash to stdout. If a escape character is detected, it writes a forward slash for the last character (which was a 
+    incomplete start to a comment) to stdout, writes the current newline to stdout, increments the number of lines, and transitions back to
+    the start state since it was not a complete start to a comment. Otherwise, it writes a forward slash for the last character (which was 
+    a incomplete start to a comment) to stdout, writes the current character to stdout, transitions to the string literal, charaacter 
+    literal, or start states depending on if the current character was a double quote, single quote, or any other character. The previous
+    state is set to this start comment state and the next character is returned. */
 static int handleStartCommentState (int c)
 {
     if (c == '*') /* Full start of a comment */
@@ -73,7 +87,7 @@ static int handleStartCommentState (int c)
         lineNumber++;
         CURRENT_STATE = START;
     }
-    else /* Uncomplete start of a comment*/
+    else 
     {
         putchar ('/'); 
         putchar (c);
@@ -85,10 +99,6 @@ static int handleStartCommentState (int c)
         {
             CURRENT_STATE = CHARACTER_LITERAL;
         }
-        else if (c == '\n')
-        {
-            lineNumber++;
-        }
         else
         {
             CURRENT_STATE = START;
@@ -97,6 +107,7 @@ static int handleStartCommentState (int c)
     PREVIOUS_STATE = START_COMMENT;
     return getchar();      
 }
+
 
 static int handleStringLiteralState (int c)
 {
