@@ -3,7 +3,7 @@ Assignment 1 readme File
 ------------------------------------------------------------------------
 What is your name?
 
-
+Nicole Deng
 
 ------------------------------------------------------------------------
 What authorized sources of information did you use to complete the
@@ -12,7 +12,27 @@ in the "Policies" web page (also available on armlab in the file
 ~cos217/AuthorizedSourcesList ) to this section of the readme file,
 and edit it as appropriate.
 
+The course's lectures. (Y)
 
+The course's precepts. (Y)
+
+The course's website. (Y)
+
+Documents that are referenced directly by the course's website. Such documents include the course's lecture slides and precept handouts. (Y)
+
+The course's textbooks and reference manuals. (Y)
+
+The man pages on the armlab cluster. (N)
+
+The course's current staff members outside of class time through office hours. (N)
+
+The course's current staff members outside of class time through meetings. (N)
+
+The course's current staff members outside of class time through Ed. (N)
+
+The course's current staff members outside of class time through e-mail. (N)
+
+Current Intro Lab TAs through visits to the Intro COS Lab. (N)
 
 ------------------------------------------------------------------------
 What unauthorized sources of information did you use to complete the
@@ -26,7 +46,7 @@ interaction, may additionally require the interaction being reported
 to the Committee on Discipline. Write "None" if you used no
 unauthorized sources of information.
 
-
+None
 
 ------------------------------------------------------------------------
 In fulfillment of the requirement from section 2.4.3 of the Academic
@@ -36,12 +56,14 @@ enter your name in the space below the following affirmation:
 This paper represents my own work in accordance with University
 regulations.
 
-
+Nicole Deng
 
 ------------------------------------------------------------------------
 What is your assessment of the assignment? Was it helpful? Was it fun?
 
-
+I thought that this assignment was a fun way to get used to programming 
+in C and also for better understanding the preprocessor. It was 
+definitely helpful!
 
 ------------------------------------------------------------------------
 (optional) What information can you provide about your submission that
