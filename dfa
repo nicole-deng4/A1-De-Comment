@@ -1,0 +1,32 @@
+START (accept)
+  '/': START_COMMENT
+  '\"': STRING_LITERAL
+  '\'': CHARACTER_LITERAL
+  Other: START
+
+START_COMMENT (accept)
+  '*': IN_COMMENT
+  '\"': STRING_LITERAL
+  '\'': CHARACTER_LITERAL
+  OTHER: START
+
+STRING_LITERAL (accept)
+  '\"': START
+  '\\': ESCAPE
+  OTHER: STRING_LITERAL
+
+CHARACTER_LITERA (accept)
+  '\'': START
+  '\\': ESCAPE
+  OTHER: CHARACTER_LITERAL
+
+IN_COMMENT (reject)
+  '*': END_COMMENT
+  OTHER: IN_COMMENT
+
+END_COMMENT (reject)
+  '/': START
+  OTHER: IN_COMMENT
+
+ESCAPE (accept)
+  OTHER: Previous State
